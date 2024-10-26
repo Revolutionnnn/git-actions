@@ -1,0 +1,53 @@
+# Archivo: .github/workflows/contextos.yml
+name: Ejemplo de Contextos en GitHub Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      saludo:
+        description: 'Ingresa un saludo'
+        required: true
+        default: 'Hola, mundo!'
+
+env:
+  GLOBAL_ENV_VAR: 'Variable de entorno global'
+
+jobs:
+  ejemplo_contextos:
+    runs-on: ubuntu-latest
+
+    vars:
+      VERSION: '1.0.0'
+    
+    steps:
+      # Contexto: 'env' - Usa la variable de entorno global
+      - name: Usar variable de entorno global
+        run: echo "Valor de GLOBAL_ENV_VAR: ${{ env.GLOBAL_ENV_VAR }}"
+
+      # Contexto: 'vars' - Usa la variable definida en 'vars'
+      - name: Usar variable de versión
+        run: echo "Versión del workflow: ${{ vars.VERSION }}"
+
+      # Contexto: 'job' - Mostrar el nombre del job
+      - name: Mostrar nombre del job
+        run: echo "Nombre del job: ${{ job.name }}"
+
+      # Contexto: 'steps' - Acceder a resultados de pasos previos
+      - name: Paso anterior exitoso
+        id: primer_paso
+        run: echo "Primer paso completado con éxito."
+      
+      - name: Revisar salida del paso anterior
+        run: echo "¿El paso anterior fue exitoso? ${{ steps.primer_paso.outcome == 'success' }}"
+
+      # Contexto: 'runner' - Información sobre el runner
+      - name: Mostrar información del runner
+        run: echo "Runner name: ${{ runner.name }}, OS: ${{ runner.os }}"
+
+      # Contexto: 'secrets' - Acceder a un secreto (reemplaza 'MY_SECRET' por un secreto válido en tu repositorio)
+      - name: Usar un secreto
+        run: echo "El valor del secreto es: ${{ secrets.MY_SECRET }}" # Asegúrate de tener el secreto MY_SECRET configurado en GitHub
+
+      # Contexto: 'inputs' - Usa el valor ingresado manualmente
+      - name: Usar el input proporcionado
+        run: echo "El saludo es: ${{ inputs.saludo }}"
