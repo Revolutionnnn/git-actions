@@ -11,9 +11,9 @@ on:
   pull_request:
     branches:
       - main
-
-  # Este evento permite activar el workflow manualmente desde GitHub
-  workflow_dispatch:
+  
+  schedule:
+    - cron:  '15 22 * * *'
 
 jobs:
   example_job:
