@@ -1,0 +1,33 @@
+# Archivo: .github/workflows/expresiones.yml
+name: Workflow con Expresiones
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Expresión 1: Usando 'contains' para verificar si el mensaje de commit contiene una palabra clave
+      - name: Verificar mensaje del commit
+        if: contains(github.event.head_commit.message, 'deploy')
+        run: echo "El commit tiene la palabra 'deploy' en el mensaje."
+
+      # Expresión 2: Usando 'env' para definir una variable y luego compararla
+      - name: Definir ambiente de prueba
+        env:
+          TARGET_ENV: 'staging'
+        run: echo "El ambiente objetivo es $TARGET_ENV"
+
+      - name: Comprobar ambiente de despliegue
+        if: ${{ env.TARGET_ENV == 'staging' }}
+        run: echo "Desplegando en el ambiente de staging."
+
+      # Expresión 3: Usando 'github.actor' para mostrar el usuario que activó el workflow
+      - name: Mostrar usuario activador
+        run: echo "Este workflow fue activado por ${{ github.actor }}."
