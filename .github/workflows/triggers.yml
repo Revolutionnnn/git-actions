@@ -1,0 +1,26 @@
+# Archivo: .github/workflows/triggers.yml
+name: Trigger
+
+on:
+  # Este evento activa el workflow cuando hay un push en la rama main
+  push:
+    branches:
+      - main
+
+  # Este evento activa el workflow cuando se crea o actualiza un pull request
+  pull_request:
+    branches:
+      - main
+
+  # Este evento permite activar el workflow manualmente desde GitHub
+  workflow_dispatch:
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run example command
+        run: echo "Workflow triggered by one of the specified events!"
